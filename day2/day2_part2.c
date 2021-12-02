@@ -5,29 +5,35 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-
-#define SIZE 16
-#define STREQL(s, t) (strcmp((s), (t)) == 0)
 
 int main(void) {
 	int horizontal_position = 0;
 	int depth = 0;
 	int aim = 0;
 
-	char direction[SIZE];
+	// The longest possible direction, 'forward', is 7 characters. We need space
+	// for this string and a 0 at the end.
+	char direction[8];
 	int distance;
-	while (scanf("%s %d", direction, &distance) == 2) {
-		if (STREQL(direction, "forward")) {
-			horizontal_position += distance;
-			depth += aim * distance;
-		} else if (STREQL(direction, "down")) {
-			aim += distance;
-		} else if (STREQL(direction, "up")) {
-			aim -= distance;
-		} else {
-			fprintf(stderr, "Exiting, invalid direction: \"%s\"\n", direction);
-			return EXIT_FAILURE;
+	while (scanf("%7s %d", direction, &distance) == 2) {
+		// Note: every input is assumed to be a valid input.
+		switch (direction[0]) {
+			case 'f':
+				// Forward
+				horizontal_position += distance;
+				depth += aim * distance;
+				break;
+			case 'd':
+				// Down
+				aim += distance;
+				break;
+			case 'u':
+				// Up
+				aim -= distance;
+				break;
+			default:
+				// Invalid direction
+				return EXIT_FAILURE;
 		}
 	}
 
